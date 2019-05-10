@@ -39,16 +39,21 @@ namespace SortedListExTask
             
             taskList.Add(taskDate, txtTask.Text);
             lstTasks.Items.Add(taskDate);
-            lstTasks.Sorted = true;
+
+           
             txtTask.Clear();
-                         
+            dtpTaskDate.Value = DateTime.Now;
+          
         }
 
         private void lstTasks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DateTime selectedDate = Convert.ToDateTime(lstTasks.SelectedItem);
+            //if(lstTasks.SelectedIndex =! -1)
+            //{
 
-            lblTaskDetails.Text = taskList[selectedDate];
+            //}
+          
+            lblTaskDetails.Text = taskList[Convert.ToDateTime(lstTasks.SelectedItem)];
         }
 
         private void btnRemoveTask_Click(object sender, EventArgs e)
@@ -57,23 +62,35 @@ namespace SortedListExTask
             if (lstTasks.SelectedIndex == -1)
             {
                 MessageBox.Show("You must seleted a task to remove", "Invalid Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-            else
-            {
-                DateTime selectedDate = Convert.ToDateTime(lstTasks.SelectedItem);
-                //taskList.Remove();
-            }
+
+           
+            taskList.Remove(Convert.ToDateTime(lstTasks.SelectedItem));
+            lstTasks.Items.Remove(lstTasks.SelectedIndex);
+
         }
 
         private void btnPrintAll_Click(object sender, EventArgs e)
         {
             string message = string.Empty;
 
+            if (taskList.Count == 0)
+            {
+                MessageBox.Show("No tasks to display");
+                return;
+            }
+
             foreach (var item in taskList)
             {
                 message += $"{item.Key} {item.Value} \n";
                
             }
+
+            //foreach (KeyValuePair<DateTime, string> item in taskList)
+            //{
+            //    message += item.Key.ToShortDateString() + " " + item.Value + Environment.NewLine;
+            //}
 
             MessageBox.Show(message);
 
